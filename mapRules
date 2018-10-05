@@ -1,0 +1,60 @@
+
+class MAP:
+
+#MAP attributes:
+# 0 empty field
+# 1 canon field
+    Map_width=43
+    Map_height=43
+    MAP = [0] * n
+    for i in range(Map_width):
+        MAP[i] = [0] * Map_height
+    
+
+    def __init__(self, name):
+        """Initializes the Map."""
+        self.name = name
+        print("(Initializing {})".format(self.name))
+       
+            
+    def printmap(self)
+        for i in range(Map_height)
+            print("|", end="")
+            for j in range(Map_width)
+                print(MAP[i][j], end="")
+            print("|", end="")
+            
+    def place_canon(self,x,y)
+        freebool=MAP[x,y]+MAP[x-1,y]+MAP[x+1,y]+MAP[x,y+1]+MAP[x-1,y+1]+MAP[x+1,y+1]+MAP[x,y-1]+MAP[x-1,y-1]+MAP[x+1,y-1]
+        if freebool >0:
+            MSG=FALSE
+            break
+        else:
+            MAP[x,y]=1
+            MAP[x-1,y]=1
+            MAP[x+1,y]=1
+            MAP[x,y+1]=1
+            MAP[x-1,y+1]=1
+            MAP[x+1,y+1]=1
+            MAP[x,y-1]=1
+            MAP[x-1,y-1]=1
+            MAP[x+1,y-1]=1
+            MSG=TRUE
+            
+    def place_canon(self,x,y)
+        freebool=MAP[x,y]+MAP[x-1,y]+MAP[x+1,y]+MAP[x,y+1]+MAP[x-1,y+1]+MAP[x+1,y+1]+MAP[x,y-1]+MAP[x-1,y-1]+MAP[x+1,y-1]
+        if freebool >0:
+            MSG=FALSE
+            break
+        else:
+            MAP[x,y]=1
+            MAP[x-1,y]=1
+            MAP[x+1,y]=1
+            MAP[x,y+1]=1
+            MAP[x-1,y+1]=1
+            MAP[x+1,y+1]=1
+            MAP[x,y-1]=1
+            MAP[x-1,y-1]=1
+            MAP[x+1,y-1]=1
+            MSG=TRUE
+       
