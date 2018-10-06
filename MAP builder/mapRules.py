@@ -1,4 +1,104 @@
 from __future__ import print_function
+
+
+class building:
+
+#object attributes
+    x=0
+    y=0
+    item_size=0
+    item_hitpoints=0
+
+    item_damage_per_second=0
+    item_range=0
+    item_damage_type='N/A'
+    item_targets='N/A'
+    item_favorite_target='any'
+    building_type='normal'
+    ALL_damage_type=[
+        'single',
+        'N/A'
+        ]
+
+    ALL_targets=[
+        'ground',
+        'air',
+        'N/A'
+        ]
+    ALL_favorite_target=[
+        'any',
+        'N/A'
+        ]
+    ALL_building_type=[
+        'normal',
+        'weapon'
+        ]
+
+#CREATOR
+#   Compulsory attributes 
+#       x
+#       y
+#       item_size 
+#       item_hitpoints
+#       building_type
+#   Additional weapon attributes
+#       item_damage_per_second
+#       item_range
+#       item_damage_type
+#       item_targets
+#       item_favorite_target
+
+    def __init__(self,x,y,item_size,item_hitpoints,building_type,item_damage_per_second=0,item_range=0,item_damage_type='N/A',item_targets='N/A',item_favorite_target='N/A'):
+        """Initializes the weapon."""
+        self.x=x
+        self.y=y
+        self.item_size=item_size
+        self.item_hitpoints=item_hitpoints
+        self.building_type=building_type
+        #Weapon attributes
+        print(building_type)
+        if building_type == 'weapon':
+            self.item_damage_per_second=item_damage_per_second
+            self.item_range=item_range
+            self.item_damage_type=item_damage_type
+            self.item_targets=item_targets
+            self.item_favorite_target=item_favorite_target
+        print("(Building Initialized)")
+
+    def setHitpoints(self,item_hitpoints):
+        self.item_hitpoints=item_hitpoints
+
+    def getHitpoints(self,item_hitpoints):
+        return self.item_hitpoints
+
+    def getlocation(self):
+        return [x,y]
+
+    def setitemattributes(self,item_hitpoints,item_damage_per_second,item_range,item_damage_type,item_targets,item_favorite_target):
+        MSG='TRUE'
+        if idigit(item_damage_per_second) and isdigit(item_hitpoints) and isdigit(item_range):   
+            self.item_damage_per_second=item_damage_per_second
+            self.item_hitpoints=item_hitpoints
+            self.item_range=item_range
+        else:
+            MSG='FALSE'
+        if isascii(item_damage_type) and isascii(item_targets) and isascii(item_favorite_target):
+            if item_damage_type in ALL_damage_type:
+                self.item_damage_type=item_damage_type
+            else: 
+                print("ERR:(invalid damage_type)")
+                MSG='FALSE'
+            if item_targets in ALL_targets:
+                self.item_targets=item_targets
+            else: 
+                print("ERR:(invalid targets)")
+                MSG='FALSE'
+            if item_favorite_target in ALL_favorite_target:
+                self.item_favorite_target=item_favorite_target
+            else: 
+                print("ERR:(invalid favorite_target)")
+                MSG='FALSE'
+
 class MAP:
 
 #MAP attributes:
@@ -29,81 +129,39 @@ class MAP:
         print("(Reseting {})".format(self.name))
         for i in range(self.Map_height):
             self.Mymap[i] = [0] * self.Map_width
-            
-    def place_weapon(self,x,y):
-        freebool=self.Mymap[x][y]#+self.Mymap[x+1][y]+self.Mymap[x+2][y]+self.Mymap[x][y+1]+self.Mymap[x][y+2]+self.Mymap[x+1][y+1]+self.Mymap[x+1][y+2]+self.Mymap[x+2][y+1]+self.Mymap[x+2][y+2]
-        if freebool >0:
-            MSG=FALSE
-        else:
-            #weapon.__init__(self,x, y,item_damage_per_second,item_hitpoints,item_range,item_damage_type,item_targets,item_favorite_target)
-            self.Mymap[x][y]=1
-            self.Mymap[x+1][y]=1
-            self.Mymap[x+2][y]=1
-            self.Mymap[x][y+1]=1
-            self.Mymap[x][y+2]=1
-            self.Mymap[x+1][y+1]=1
-            self.Mymap[x+1][y+2]=1
-            self.Mymap[x+2][y+1]=1
-            self.Mymap[x+2][y+2]=1
-            self.amount_of_components+=1
-            MSG='TRUE'
-        return MSG
 
-    def place_other(x,y,item_size,item_hitpoints):
+    def place_building(self,building):
         freebool=0
-        for i in range(item_size):
-            for j in range (item_size):
-                freebool=freebool+self.Mymap[x+i,y+j]
+        print("item size",building.item_size)
+        for i in range(building.item_size):
+            for j in range (building.item_size):
+                freebool=freebool+self.Mymap[building.x+i][building.y+j]
         if freebool >0:
             MSG='FALSE'
-        else:
-            for i in range(item_size):
-                for j in range (item_size):
-                    self.Mymap[x+i][y+j]=9
+        elif building.building_type=='weapon':
+            print("in")
+            for i in range(building.item_size):
+                for j in range (building.item_size):
+                    self.Mymap[building.x+i][building.y+j]=1
+            self.Mymap[building.x+1][building.y+1]=2
             self.amount_of_components+=1
             MSG='TRUE'
+        else:
+            print("building.building_type",building.building_type)
+            for i in range(building.item_size):
+                for j in range (building.item_size):
+                    self.Mymap[building.x+i][building.y+j]=9
+            self.amount_of_components+=1
+            MSG='TRUE'           
         return MSG
 
-class weapon:
-    item_damage_per_second=0
-    item_hitpoints=0
-    item_range=0
-    item_damage_type=0
-    item_targets=0
-    item_favorite_target=0
-    def __init__(self, item_damage_per_second,item_hitpoints,item_range,item_damage_type,item_targets,item_favorite_target):
-        """Initializes the weapon."""
-        self.item_damage_per_second=item_damage_per_second
-        self.item_hitpoints=item_hitpoints
-        self.item_range=item_range
-        self.item_damage_type=item_damage_type
-        self.item_targets=item_targets
-        self.item_favorite_target=item_favorite_target
-        print("(Initializing weapon)")
-    def setitemattributes(self,item_damage_per_second,item_hitpoints,item_range,item_damage_type,item_targets,item_favorite_target):
-        self.item_damage_per_second=item_damage_per_second
-        self.item_hitpoints=item_hitpoints
-        self.item_range=item_range
-        self.item_damage_type=item_damage_type
-        self.item_targets=item_targets
-        self.item_favorite_target=item_favorite_target
 
-class building:
-    item_hitpoints=0
-    item_size=0
-    def __init__(self,item_size,item_hitpoints):
-        """Initializes the weapon."""
-        self.item_hitpoints=item_hitpoints
-        self.item_size=item_size
-        print("(Initializing building)")
-    def setitemattributes(self,item_hitpoints):
-        self.item_hitpoints=item_hitpoints
 
 mymap=MAP("mymap")
 mymap.printmap()
-canon1=weapon(5,1,1,1,1,1)
-mymap.place_weapon(1,1)
+canon1=building(12,12,3,300,'weapon')
+hut1=building(12,12,2,300,'normal')
+mymap.place_building(canon1)
 mymap.printmap()
-mymap.resetmap()
+mymap.place_building(hut1)
 mymap.printmap()
-
