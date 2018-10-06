@@ -2,7 +2,7 @@ from __future__ import print_function
 
 
 class building:
-
+    MSG='TRUE'
 #object attributes
     x=0
     y=0
@@ -48,7 +48,7 @@ class building:
 #       item_targets
 #       item_favorite_target
 
-    def __init__(self,x,y,item_size,item_hitpoints,building_type,item_damage_per_second=0,item_range=0,item_damage_type='N/A',item_targets='N/A',item_favorite_target='N/A'):
+    def __init__(self,item_hitpoints,building_type,item_size,[x,y]=[-1,-1],item_damage_per_second=0,item_range=0,item_damage_type='N/A',item_targets='N/A',item_favorite_target='N/A'):
         """Initializes the weapon."""
         self.x=x
         self.y=y
@@ -73,31 +73,37 @@ class building:
 
     def getlocation(self):
         return [x,y]
+    def setlocation(self,[x,y]):
+        self.x=x
+        self.y=y
 
     def setitemattributes(self,item_hitpoints,item_damage_per_second,item_range,item_damage_type,item_targets,item_favorite_target):
-        MSG='TRUE'
         if idigit(item_damage_per_second) and isdigit(item_hitpoints) and isdigit(item_range):   
             self.item_damage_per_second=item_damage_per_second
             self.item_hitpoints=item_hitpoints
             self.item_range=item_range
         else:
-            MSG='FALSE'
+            self.MSG='FALSE'
         if isascii(item_damage_type) and isascii(item_targets) and isascii(item_favorite_target):
             if item_damage_type in ALL_damage_type:
                 self.item_damage_type=item_damage_type
             else: 
                 print("ERR:(invalid damage_type)")
-                MSG='FALSE'
+                self.MSG='FALSE'
             if item_targets in ALL_targets:
                 self.item_targets=item_targets
             else: 
                 print("ERR:(invalid targets)")
-                MSG='FALSE'
+                self.MSG='FALSE'
             if item_favorite_target in ALL_favorite_target:
                 self.item_favorite_target=item_favorite_target
             else: 
                 print("ERR:(invalid favorite_target)")
-                MSG='FALSE'
+                self.MSG='FALSE'
+    def getMSG(self):
+        return self.MSG
+    def setMSG(self,MSG):
+        self.MSG=MSG
 
 class MAP:
 
@@ -137,31 +143,18 @@ class MAP:
             for j in range (building.item_size):
                 freebool=freebool+self.Mymap[building.x+i][building.y+j]
         if freebool >0:
-            MSG='FALSE'
+            building.setMSG('FALSE')
         elif building.building_type=='weapon':
-            print("in")
             for i in range(building.item_size):
                 for j in range (building.item_size):
                     self.Mymap[building.x+i][building.y+j]=1
             self.Mymap[building.x+1][building.y+1]=2
             self.amount_of_components+=1
-            MSG='TRUE'
         else:
             print("building.building_type",building.building_type)
             for i in range(building.item_size):
                 for j in range (building.item_size):
                     self.Mymap[building.x+i][building.y+j]=9
-            self.amount_of_components+=1
-            MSG='TRUE'           
-        return MSG
+            self.amount_of_components+=1         
 
 
-
-mymap=MAP("mymap")
-mymap.printmap()
-canon1=building(12,12,3,300,'weapon')
-hut1=building(12,12,2,300,'normal')
-mymap.place_building(canon1)
-mymap.printmap()
-mymap.place_building(hut1)
-mymap.printmap()
